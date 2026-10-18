@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taste Malaysia — Play & Discover</title>
+<style>
+:root{--navy:#12356b;--blue:#0c4c8a;--yellow:#ffc629;--cream:#fff7df;--green:#08785f;--coral:#ef654f}
+*{box-sizing:border-box}
+body{margin:0;font-family:Trebuchet MS,Segoe UI,Arial,sans-serif;color:var(--navy);background:linear-gradient(160deg,#fff8df,#f4e7bb 60%,#d9f0d9);min-height:100vh}
+.leaves{position:fixed;inset:0;pointer-events:none;opacity:.16;font-size:70px;overflow:hidden;z-index:0}
+.leaves span{position:absolute}.leaves span:nth-child(1){top:3%;left:1%}.leaves span:nth-child(2){top:35%;right:1%}.leaves span:nth-child(3){bottom:2%;left:3%}.leaves span:nth-child(4){top:65%;left:1%}
+.app{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:20px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.brand{font-size:clamp(25px,4vw,43px);font-weight:900;line-height:.95;letter-spacing:-1.5px;color:#fff;text-shadow:3px 4px 0 var(--navy);transform:rotate(-2deg)}
+.brand span{display:block;color:var(--yellow);font-size:1.08em}
+.tagline{font-size:12px;letter-spacing:2px;font-weight:800;margin-top:9px;color:var(--navy)}
+.flag{font-size:clamp(35px,6vw,62px)}
+.badge{background:var(--green);color:white;border-radius:999px;padding:9px 14px;font-size:12px;font-weight:800;letter-spacing:1px}
+.layout{display:grid;grid-template-columns:1.05fr 1.4fr;gap:18px;align-items:stretch}
+.panel{background:rgba(255,255,255,.82);border:3px solid white;border-radius:24px;padding:20px;box-shadow:0 10px 0 rgba(18,53,107,.10)}
+h1,h2,h3,p{margin-top:0}
+h1{font-size:clamp(26px,4vw,42px);margin-bottom:8px;line-height:1.05}
+h2{font-size:22px;margin-bottom:8px}
+.subtitle{line-height:1.5;color:#3c5478;font-size:14px}
+.eyebrow{text-transform:uppercase;font-size:11px;letter-spacing:2px;font-weight:900;color:var(--green);margin-bottom:8px}
+.dish-picker{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.dish-choice{border:2px solid #e5d7ae;background:#fff9e9;border-radius:14px;padding:9px 11px;font-weight:800;color:var(--navy);cursor:pointer}
+.dish-choice.active{background:var(--yellow);border-color:var(--yellow)}
+.ingredients{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}
+.ingredient{background:#fff8e8;border:2px solid #f0dfb1;border-radius:15px;padding:11px 5px;text-align:center;cursor:grab;user-select:none;transition:.15s;min-height:92px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ingredient:hover{transform:translateY(-2px);border-color:var(--yellow)}
+.ingredient .emoji{font-size:29px;line-height:1.1;margin-bottom:6px}
+.ingredient .name{font-size:11px;font-weight:800}
+.ingredient:active{cursor:grabbing}
+.plate-area{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:325px;background:linear-gradient(135deg,#d9f0d9,#fff2bd);border-radius:20px;padding:15px;border:2px dashed #a5c7a7}
+.plate{width:min(100%,300px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff 0 57%,#e7e7e7 58% 63%,#fff 64% 70%,#d8d8d8 71% 73%,#fff 74%);box-shadow:0 8px 14px #59745b33;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.plate-inner{width:74%;height:74%;border-radius:50%;background:#e4f1cb;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:5px;padding:14px;border:2px solid #c5d8a5}
+.placed{font-size:clamp(25px,4vw,39px);filter:drop-shadow(1px 2px 1px #0002);animation:pop .2s ease-out}
+@keyframes pop{from{transform:scale(.4)}to{transform:scale(1)}}
+.plate-hint{font-size:12px;text-align:center;color:#57715b;margin-top:12px;font-weight:700}
+.progress{display:flex;gap:6px;margin:16px 0}
+.dot{height:7px;flex:1;border-radius:99px;background:#dfdfcf}.dot.on{background:var(--green)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+button{font-family:inherit;border:0;border-radius:999px;padding:13px 18px;font-size:14px;font-weight:900;cursor:pointer;transition:.15s}
+button:hover{transform:translateY(-2px)}
+.primary{background:var(--yellow);color:var(--navy);box-shadow:0 4px 0 #e1a900}
+.secondary{background:var(--navy);color:white}
+.light{background:#e5f2e4;color:var(--green)}
+.status{font-weight:800;font-size:13px;min-height:20px;margin-top:12px;color:var(--green)}
+.story{display:none;margin-top:18px;background:#fff5d5;border:2px solid #f0d58c;border-radius:18px;padding:17px}
+.story.show{display:block;animation:pop .25s}
+.story h2{color:#9b4b1b}
+.story p{font-size:14px;line-height:1.55;margin-bottom:8px}
+.story .food-title{font-weight:900;color:var(--green);font-size:12px;letter-spacing:1px;text-transform:uppercase}
+footer{text-align:center;font-size:11px;color:#526b75;padding:20px 0 5px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.app{padding:13px}.panel{padding:16px}.plate-area{min-height:280px}header{align-items:flex-start}.badge{max-width:130px;text-align:center}}
+</style>
+</head>
+<body>
+<div class="leaves"><span>🌿</span><span>🌺</span><span>🍃</span><span>🌴</span></div>
+<div class="app">
+<header>
+  <div><div class="brand">Taste <span>Malaysia</span></div><div class="tagline">PLAY · DISCOVER · EXPLORE</div></div>
+  <div style="text-align:right"><div class="flag">🇲🇾</div><div class="badge">TOURISM FOOD GAME</div></div>
+</header>
+<div class="layout">
+<section class="panel">
+  <div class="eyebrow">Level 01 · Build a dish</div>
+  <h1 id="question">Can you build Nasi Lemak?</h1>
+  <p class="subtitle">Drag the ingredients onto the plate. Complete the dish to discover the story behind Malaysian food.</p>
+  <div class="dish-picker" id="dishPicker">
+    <button class="dish-choice active" data-dish="nasi">Nasi Lemak</button>
+    <button class="dish-choice" data-dish="satay">Satay</button>
+    <button class="dish-choice" data-dish="laksa">Laksa</button>
+  </div>
+  <h3 style="margin:10px 0 0">Choose your ingredients</h3>
+  <div class="ingredients" id="ingredients"></div>
+  <div class="actions"><button class="primary" id="checkBtn">Check My Dish ✨</button><button class="light" id="resetBtn">Reset Plate</button></div>
+  <div class="status" id="status" aria-live="polite">Tip: drag each ingredient onto the plate.</div>
+</section>
+<section class="panel">
+  <div class="eyebrow">Your cooking station</div>
+  <h2 id="plateTitle">Make Nasi Lemak</h2>
+  <div class="progress"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+  <div class="plate-area" id="dropZone">
+    <div class="plate" aria-label="Plate drop area"><div class="plate-inner" id="plateInner"><span style="font-size:12px;color:#6f8d5b;text-align:center">Drag ingredients here!</span></div></div>
+    <div class="plate-hint">DROP INGREDIENTS ON THE PLATE</div>
+  </div>
+  <div class="story" id="story">
+    <div class="food-title">Culture unlocked · Malaysia</div>
+    <h2 id="storyTitle">A Malaysian favourite!</h2>
+    <p id="storyText"></p>
+    <div class="actions"><button class="primary" id="nextBtn">Next Dish →</button><button class="secondary" id="againBtn">Play Again ↻</button></div>
+  </div>
+</section>
+</div>
+<footer>Concept mock-up for an interactive Tourism Malaysia campaign · Play & Discover</footer>
+</div>
+<script>
+const dishes={
+ nasi:{name:"Nasi Lemak",question:"Can you build Nasi Lemak?",required:["rice","sambal","anchovies","peanuts","egg","cucumber"],story:"Nasi Lemak is one of Malaysia’s best-known dishes. Its fragrant coconut rice is often served with sambal, ikan bilis, peanuts, egg and cucumber. It is enjoyed by people from many communities and is a familiar part of everyday Malaysian food culture.",items:[["rice","🍚","Coconut rice"],["sambal","🌶️","Sambal"],["anchovies","🐟","Ikan bilis"],["peanuts","🥜","Peanuts"],["egg","🍳","Egg"],["cucumber","🥒","Cucumber"],["coconut","🥥","Coconut"],["leaf","🍃","Banana leaf"],["onion","🧅","Onion"]]},
+ satay:{name:"Satay",question:"Can you build Satay?",required:["skewers","peanutSauce","cucumber","onion"],story:"Satay is made with seasoned meat grilled on skewers and commonly served with peanut sauce, cucumber and onion. It is a popular dish at food stalls, markets and gatherings, bringing people together over shared food.",items:[["skewers","🍢","Grilled satay"],["peanutSauce","🥜","Peanut sauce"],["cucumber","🥒","Cucumber"],["onion","🧅","Onion"],["rice","🍚","Rice cakes"],["chili","🌶️","Chilli"],["lime","🍋","Lime"],["leaf","🍃","Banana leaf"]]},
+ laksa:{name:"Laksa",question:"Can you build Laksa?",required:["noodles","broth","fish","herbs"],story:"Laksa is a much-loved noodle dish with many regional versions across Malaysia. Different recipes use different broths, spices and toppings. Its variety reflects the rich mix of local traditions and influences found in Malaysian food.",items:[["noodles","🍜","Noodles"],["broth","🥣","Spiced broth"],["fish","🐟","Fish"],["herbs","🌿","Fresh herbs"],["chili","🌶️","Chilli"],["lime","🍋","Lime"],["egg","🥚","Egg"],["coconut","🥥","Coconut"]]}
+};
+let current="nasi",placed=[];
+const $=id=>document.getElementById(id);
+function renderIngredients(){const d=dishes[current];$("ingredients").innerHTML="";d.items.forEach(([id,emoji,name])=>{const el=document.createElement("div");el.className="ingredient";el.draggable=true;el.dataset.id=id;el.innerHTML=`<div class="emoji">${emoji}</div><div class="name">${name}</div>`;el.addEventListener("dragstart",e=>{e.dataTransfer.setData("text/plain",id)});el.addEventListener("click",()=>addIngredient(id));$("ingredients").appendChild(el)});}
+function renderPlate(){const inner=$("plateInner");inner.innerHTML="";if(!placed.length){inner.innerHTML='<span style="font-size:12px;color:#6f8d5b;text-align:center">Drag ingredients here!</span>';return}placed.forEach(id=>{const item=dishes[current].items.find(x=>x[0]===id);if(item){const s=document.createElement("span");s.className="placed";s.textContent=item[1];s.title=item[2];inner.appendChild(s)}})}
+function addIngredient(id){if(placed.includes(id)){ $("status").textContent="You already added that ingredient.";return;}placed.push(id);renderPlate();$("status").textContent="Nice choice! Keep adding ingredients."; $("story").classList.remove("show")}
+$("dropZone").addEventListener("dragover",e=>{e.preventDefault();$("dropZone").style.borderColor="#08785f"});
+$("dropZone").addEventListener("dragleave",()=>{$("dropZone").style.borderColor="#a5c7a7"});
+$("dropZone").addEventListener("drop",e=>{e.preventDefault();$("dropZone").style.borderColor="#a5c7a7";const id=e.dataTransfer.getData("text/plain");if(id)addIngredient(id)});
+$("checkBtn").addEventListener("click",()=>{const d=dishes[current];const missing=d.required.filter(id=>!placed.includes(id));if(missing.length){$("status").textContent=`Almost there! Add ${missing.length} more key ingredient${missing.length===1?"":"s"}.`;return;}$("status").textContent="Great job! You completed the dish!";$("storyTitle").textContent=`Great job! You made ${d.name}!`;$("storyText").textContent=d.story;$("story").classList.add("show");document.querySelectorAll(".dot").forEach((dot,i)=>dot.classList.toggle("on",i===0||i===1));});
+function setDish(key){current=key;placed=[];const d=dishes[key];$("question").textContent=d.question;$("plateTitle").textContent="Make "+d.name;$("story").classList.remove("show");$("status").textContent="Tip: drag each ingredient onto the plate.";document.querySelectorAll(".dish-choice").forEach(b=>b.classList.toggle("active",b.dataset.dish===key));renderIngredients();renderPlate();document.querySelectorAll(".dot").forEach((dot,i)=>dot.classList.toggle("on",i===0));}
+document.querySelectorAll(".dish-choice").forEach(b=>b.addEventListener("click",()=>setDish(b.dataset.dish)));
+$("resetBtn").addEventListener("click",()=>{placed=[];renderPlate();$("story").classList.remove("show");$("status").textContent="Plate cleared. Try again!"});
+$("nextBtn").addEventListener("click",()=>setDish(current==="nasi"?"satay":current==="satay"?"laksa":"nasi"));
+$("againBtn").addEventListener("click",()=>setDish(current));
+setDish("nasi");
+</script>
+</body>
+</html>
